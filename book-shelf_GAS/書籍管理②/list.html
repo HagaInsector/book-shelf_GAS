@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+<body>
+  <h1 id="h1-blue">書籍リスト</h1>
+<body>
+    
+<script>  
+function loadingProcess(){
+google.script.run.withSuccessHandler(dispSpreadsheet).GetSpreadsheet();
+  }
+  window.addEventListener('load', loadingProcess);
+  
+function dispSpreadsheet(spreadsheet_data){
+    var htmlTable = '<table id="tableSSData">';
+    for(var row = 0; row < spreadsheet_data.length; row++){
+      htmlTable += '<tr>';
+
+      for(var col = 0; col < spreadsheet_data[row].length; col++){
+   
+        htmlTable += '<td><textarea id="txt' + row + col + '">' + spreadsheet_data[row][col] + '</textarea></td>';
+      }
+      htmlTable += '</tr>';
+    }
+    
+    htmlTable += '</table>';
+    document.getElementById("dispArea").innerHTML = htmlTable;
+    
+  }
+  </script>
+
+<head>
+    <base target="_top">
+</head>
+<body>
+  <div id='dispArea'> </div>
+  <a href="https://script.google.com/macros/s/＊スクリプトID①＊/exec?p=index">メニュー</a><br>
+</body>
+</html>

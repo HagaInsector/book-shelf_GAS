@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+<base target="_top">
+</head>
+<body>
+<h1 id="h1-blue">検索・登録</h1>
+<div>
+        ISBN-13を入力してください<br>
+        <input id="isbn" type="text" name="isbn" value="" autofocus>
+        <button id="getBookInfo" class="btn btn-default">書籍情報取得</button>
+    </div>
+<div>
+  <p id="thumbnail"></p>
+</div>
+
+<p>------------------------検索結果------------------------</p>
+
+<form action="https://script.google.com/macros/s/＊スクリプトID①＊/exec" method="post">
+  ISBN-13: <input type="text" id="isbn13" name="isbn13"><br>
+  タイトル: <input type="text" id="title" name="title"><br>
+  出版社: <input type="text" id="publisher" name="publisher"><br>
+  著者: <input type="text" id="author" name="author"><br>
+  出版日: <input type="text" id="pubdate" name="pubdate"><br>
+  <input type="submit">
+  </form>
+  
+  <script>
+        $(function() {
+            $('#getBookInfo').click( function( e ) {
+                e.preventDefault();
+                isbn = $("#isbn").val();
+                isbn = isbn.replace(/-/g,"");
+                const url = "https://www.googleapis.com/books/v1/volumes?q=" + isbn;
+ $.getJSON(url, function(data) {
+   $("#isbn13").val("未定義");
+   $("#title").val("");
+   $("#publisher").val("");
+   $("#author").val("");
+   $("#pubdate").val("");
+   if(data.totalItems==0 ) {
+     alert("データが見つかりません");
+   } else {
+     var i = 0;
+     var j = -1;
+     for(i=0;i<=3;i++){
+       try{
+         if(data.items[i].volumeInfo.imageLinks.thumbnail == "" ){
+           $("#thumbnail").html('<img src=\"\" />');
+         } else {
+           $("#thumbnail").html('<img src=\"' +   data.items[i].volumeInfo.imageLinks.thumbnail + '\" style=\"border:solid 1px #000000\" />');
+           j = i;
+		   break;
+         }
+       }catch(e){}finally{}
+     }
+     var ii = 0;
+     for(ii=0,i=0;ii<=3;i++,ii++){
+       try{
+         for(var c=0;c<=3;c++){
+           if(data.items[ii].volumeInfo.industryIdentifiers[c].type == "ISBN_13"){
+             if(data.items[ii].volumeInfo.industryIdentifiers[c].identifier == isbn){
+               $("#isbn13").val(data.items[ii].volumeInfo.industryIdentifiers[c].identifier);
+             }
+           }
+         }
+       }catch(e){}finally{}
+       if(!(j == -1)) i = j;
+       try{
+         $("#title").val(data.items[i].volumeInfo.title);
+       }catch(e){}finally{}
+       try{
+         $("#publisher").val(data.items[i].volumeInfo.publisher);
+       }catch(e){}finally{}
+       try{
+         $("#author").val(data.items[i].volumeInfo.authors[0]);
+       }catch(e){}finally{}
+       try{
+         $("#pubdate").val(data.items[i].volumeInfo.publishedDate);
+       }catch(e){}finally{}
+         }
+	   }
+   }
+                );
+            });
+        });
+    </script>
+
+    <a href="https://script.google.com/macros/s/＊スクリプトID①＊/exec?p=index">メニュー</a><br>
+  </body>
+</html>
