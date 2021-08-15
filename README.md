@@ -10,9 +10,9 @@
  ＊スクリプトID①＊
  ＊スクリプトID②＊
 
-   https://script.google.com/home/projects/＊ここがスクリプトIDです＊/edit
+  https://script.google.com/home/projects/＊ここがスクリプトIDです＊/edit
 
-   スクリプトID①は「書籍管理①」からつくったもの、スクリプトID②は「書籍管理②」からつくったものです。
+  スクリプトID①は「書籍管理①」からつくったもの、スクリプトID②は「書籍管理②」からつくったものです。
 
  ＊スプレッドシートID①＊
 
